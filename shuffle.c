@@ -10,12 +10,12 @@
 // do NOT modify this function
 static void printDeck(CardDeck deck)
 {
-	int ind;
-	for (ind = 0; ind < deck.size; ind ++)
-	{
-		printf("%c ", deck.cards[ind]);
-	}
-	printf("\n");
+  int ind;
+  for (ind = 0; ind < deck.size; ind ++)
+    {
+      printf("%c ", deck.cards[ind]);
+    }
+  printf("\n");
 }
 
 #ifdef TEST_DIVIDE
@@ -31,33 +31,27 @@ static void printDeck(CardDeck deck)
 // cards from the bottom of the original deck.
 void divide(CardDeck origDeck, CardDeck * leftDeck, CardDeck * rightDeck)
 {
-	int origSize = origDeck.size;
-	int divisions = origSize - 1;
-	
-	
-	for (int i = 0; i < divisions; i++) 
-	{
-		int leftSize = i + 1;
-		int rightSize = origDeck.size - leftSize;
+    int origSize = origDeck.size;
+    int divisions = origSize - 1;
 
-		leftDeck[i].size = leftSize;
-		rightDeck[i].size = rightSize;
+    for (int i = 0; i < divisions; i++) 
+    {
+        int leftSize = i + 1;
+        int rightSize = origDeck.size - leftSize;
 
-		for (int j = 0; j < leftSize; j++) 
-	resultDeck.cards[resultIndex] = leftDeck.cards[leftIndex];
-        interleaveHelper(leftDeck, rightDeck, resultDeck, leftIndex + 1, rightIndex, resultIndex + 1);
+        leftDeck[i].size = leftSize;
+        rightDeck[i].size = rightSize;
 
-        resultDeck.cards[resultIndex] = rightDeck.cards[rightIndex];
-        interleaveHelper(leftDeck, rightDeck, resultDeck, leftIndex, rightIndex + 1, resultIndex + 1);
-    }	{
-			leftDeck[i].cards[j] = origDeck.cards[j];
-		}
+        for (int j = 0; j < leftSize; j++) 
+        {
+            leftDeck[i].cards[j] = origDeck.cards[j];
+        }
 
-		for (int j = 0; j < rightSize; j++) 
-		{
-			rightDeck[i].cards[j] = origDeck.cards[leftSize + j];
-		}
-	}
+        for (int j = 0; j < rightSize; j++) 
+        {
+            rightDeck[i].cards[j] = origDeck.cards[leftSize + j];
+        }
+    }
 }
 #endif
 
@@ -104,51 +98,43 @@ void divide(CardDeck origDeck, CardDeck * leftDeck, CardDeck * rightDeck)
 // so that the function can be removed for grading other parts of the
 // program.
 void interleaveHelper(CardDeck leftDeck, CardDeck rightDeck, CardDeck resultDeck, int leftIndex, int rightIndex, int resultIndex) {
-	if (leftIndex == leftDeck.size) 
-	{
-		for (int i = rightIndex; i < rightDeck.size; i++) 
+    if (leftIndex == leftDeck.size) 
+    {
+        for (int i = rightIndex; i < rightDeck.size; i++) 
         {
             resultDeck.cards[resultIndex] = rightDeck.cards[i];
             resultIndex++;
         }
 
-        for (int i = 0; i < resultDeck.size; i++) 
-        {
-            printf("%c ", resultDeck.cards[i]);
-        }
-        printf("\n"); 
-        return;	
-	} 
-	else if (rightIndex == rightDeck.size) 
+        printDeck(resultDeck);
+        return;    
+    } 
+    else if (rightIndex == rightDeck.size) 
     {
-		for (int i = leftIndex; i < leftDeck.size; i++) 
+        for (int i = leftIndex; i < leftDeck.size; i++) 
         {
             resultDeck.cards[resultIndex] = leftDeck.cards[i];
             resultIndex++; 
         }
 
-        for (int i = 0; i < resultDeck.size; i++) 
-        {
-            printf("%c ", resultDeck.cards[i]);
-        }
-        printf("\n"); 
+        printDeck(resultDeck);
         return;
     }
     else {
-		resultDeck.cards[resultIndex] = leftDeck.cards[leftIndex];
+        resultDeck.cards[resultIndex] = leftDeck.cards[leftIndex];
         interleaveHelper(leftDeck, rightDeck, resultDeck, leftIndex + 1, rightIndex, resultIndex + 1);
 
         resultDeck.cards[resultIndex] = rightDeck.cards[rightIndex];
         interleaveHelper(leftDeck, rightDeck, resultDeck, leftIndex, rightIndex + 1, resultIndex + 1);
-    }		
+    }        
 }
 
 void interleave(CardDeck leftDeck, CardDeck rightDeck)
 {
-	CardDeck resultDeck;
+    CardDeck resultDeck;
 
-	resultDeck.size = leftDeck.size + rightDeck.size;
-	interleaveHelper(leftDeck, rightDeck, resultDeck, 0, 0, 0);
+    resultDeck.size = leftDeck.size + rightDeck.size;
+    interleaveHelper(leftDeck, rightDeck, resultDeck, 0, 0, 0);
 }
 #endif
 
@@ -168,19 +154,19 @@ void interleave(CardDeck leftDeck, CardDeck rightDeck)
 //
 void shuffle(CardDeck origDeck)
 {
-	int numPairs = origDeck.size - 1;
+    int numPairs = origDeck.size - 1;
 
-	CardDeck * leftDeck = malloc(sizeof(CardDeck) * numPairs);
-	CardDeck * rightDeck = malloc(sizeof(CardDeck) * numPairs);
-	
-	divide(origDeck, leftDeck, rightDeck);
+    CardDeck * leftDeck = malloc(sizeof(CardDeck) * numPairs);
+    CardDeck * rightDeck = malloc(sizeof(CardDeck) * numPairs);
 
-	for (int i = 0; i < numPairs; i++) 
-	{
-		interleave(leftDeck[i], rightDeck[i]);
-	}
+    divide(origDeck, leftDeck, rightDeck);
 
-	free(leftDeck);
-	free(rightDeck);
+    for (int i = 0; i < numPairs; i++) 
+    {
+        interleave(leftDeck[i], rightDeck[i]);
+    }
+
+    free(leftDeck);
+    free(rightDeck);
 }
 #endif
