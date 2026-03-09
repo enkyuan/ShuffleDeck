@@ -7,9 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Forward declaration so interleaveHelper knows shuffle exists
-void shuffle(CardDeck origDeck, int round);
-
 // do NOT modify this function
 static void printDeck(CardDeck deck)
 {
